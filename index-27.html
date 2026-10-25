@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="light dark"><title>PseudoPlan</title>
+<meta name="theme-color" content="#eeedf1">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&text=PseudoPlan&display=swap">
+<style>
+/* هوية PseudoPlan: أسود دافئ، قرمزي جلدي، ذهب عتيق، ياقوت أزرق */
+:root{--bg:#eeedf1;--s1:#fbfafc;--s2:#e7e4ea;--fg:#1e1719;--mu:#6a5f66;--bd:#d8d3da;--cr:#8e1a2b;--crt:#f2dde0;--ci:#8e1a2b;--on-cr:#fff;--au:#84631f;--au2:#b58f45;--aut:#efe5cf;--sa:#2e4a93;--sat:#dfe5f4;--wb:#f1e2c2;--wf:#5b4310;--bb:#f3dadc;--bf:#6e1d25;--wm:#8e1a2b;--ok:#2d7a4f;--okt:#d6ead9;color-scheme:light}
+.dark{--bg:#0d0a0b;--s1:#161113;--s2:#201a1c;--fg:#ebe3dc;--mu:#a1948f;--bd:#30252a;--cr:#b02338;--crt:#2e1519;--ci:#e27a89;--au:#d4ae68;--au2:#a98547;--aut:#2a2215;--sa:#93abea;--sat:#19223a;--wb:#2b2314;--wf:#ecd49c;--bb:#331519;--bf:#f1bcc4;--wm:#c9364a;--ok:#6fbf8e;--okt:#1a2e21;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;background:var(--bg);color:var(--fg);padding-bottom:96px;line-height:1.6;font-size:15px}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}input,select,textarea{font-size:16px}bdi{unicode-bidi:isolate}
+.ic{flex:none;vertical-align:middle}.w{width:min(100% - 28px,760px);margin:auto}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 0 8px}
+.logo{font-family:UnifrakturCook,"IBM Plex Sans Arabic",serif;font-weight:700;font-size:27px;color:var(--wm);user-select:none;line-height:1.2;letter-spacing:.2px}
+.orn{height:11px;display:flex;align-items:center;gap:8px;margin:2px 0 14px}
+.orn:before,.orn:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--au2))}.orn:after{transform:scaleX(-1)}
+.orn i{width:7px;height:7px;background:var(--au2);transform:rotate(45deg)}
+h1{font-size:23px;margin:4px 0 10px;font-weight:700;line-height:1.35}
+h2{font-size:16px;margin:22px 0 8px;font-weight:600;display:flex;align-items:center;gap:8px}h2 .ic{color:var(--au)}
+.mu{color:var(--mu);font-size:13px}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:14px;margin:10px 0}
+.b,.b2,.sm{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-weight:600;transition:transform .12s}
+.b:active,.b2:active,.sm:active{transform:scale(.97)}
+.b,.b2{border-radius:12px;min-height:44px;padding:0 16px}
+.b{background:var(--cr);color:var(--on-cr)}.b2{background:var(--s2);border:1px solid var(--bd)}
+.sm{border-radius:9px;min-height:34px;padding:0 11px;font-size:13px;background:var(--s1);border:1px solid var(--bd)}
+.sm.on{background:var(--crt);color:var(--ci);border-color:var(--ci)}.sm.x{color:var(--ci)}
+input,select,textarea{width:100%;min-height:44px;padding:6px 11px;border:1px solid var(--bd);border-radius:11px;background:var(--bg)}
+textarea{min-height:120px;padding:9px}
+:is(input,select,button,textarea,summary):focus-visible{outline:2px solid var(--au);outline-offset:2px}
+label{display:grid;gap:5px;font-size:13px;font-weight:600;color:var(--mu)}label :is(input,select){color:var(--fg);font-weight:400}
+.g{display:grid;gap:9px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:2fr 1fr 1fr}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.sp{justify-content:space-between}
+.dot{width:10px;height:10px;border-radius:3px;transform:rotate(45deg);display:inline-block;margin-inline-end:9px}
+.it{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--bd);font-size:14px}.it:last-child{border-bottom:0}
+.pt{background:var(--s2);border-radius:6px;font-size:11px;padding:1px 8px;font-weight:600;color:var(--mu)}
+nav{position:fixed;bottom:0;inset-inline:0;background:var(--s1);border-top:1px solid var(--bd);display:grid;grid-template-columns:repeat(4,1fr);padding:4px 4px calc(4px + env(safe-area-inset-bottom))}
+nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11.5px;min-height:54px;color:var(--mu);font-weight:500;position:relative}
+nav .on{color:var(--ci);font-weight:600}
+nav .on:before{content:"";position:absolute;top:-5px;width:26px;height:3px;border-radius:0 0 3px 3px;background:var(--au2)}
+.ban{display:flex;gap:10px;align-items:flex-start;border-radius:13px;padding:11px 13px;background:var(--sat);font-size:14px;margin:10px 0}
+.ban .ic{margin-top:3px;color:var(--sa)}
+.ban.warn{background:var(--wb);color:var(--wf)}.ban.warn .ic{color:var(--wf)}.ban.bad{background:var(--bb);color:var(--bf)}.ban.bad .ic{color:var(--bf)}.ban.ok{background:var(--okt);color:var(--ok)}.ban.ok .ic{color:var(--ok)}
+.hero{position:relative;background:linear-gradient(140deg,#3d0a12,#751424 62%,#4f0d19);color:#f3e6dc;border-radius:20px;padding:18px;margin:10px 0;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:6px;border:1px solid rgba(214,177,107,.42);border-radius:15px;pointer-events:none}
+.hero .bar{background:rgba(255,255,255,.15)}.hero .stt{color:#e6c47f}.hero .stt .ic{color:#e6c47f}
+.bar{height:8px;border-radius:9px;background:var(--s2);overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--au2),var(--au));border-radius:9px;transition:width .4s}
+.stt{display:flex;gap:16px;margin-top:10px;font-size:13px;color:var(--mu);flex-wrap:wrap}.stt span{display:inline-flex;gap:5px;align-items:center}
+.task{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:11px 12px;border:1px solid var(--bd);border-inline-start:4px solid var(--tc,var(--au2));border-radius:13px;background:var(--s1);margin:8px 0}
+.task.dn{opacity:.55}.task b{display:block;font-size:14px;font-weight:600;margin:3px 0 1px}.task small{color:var(--mu);font-size:12px}
+.ac{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.tg{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;border-radius:6px;padding:1px 8px;background:var(--crt);color:var(--ci)}
+.tg.review{background:var(--aut);color:var(--au)}.tg.free{background:var(--okt);color:var(--ok)}
+summary{cursor:pointer;font-weight:600;list-style:none}summary::-webkit-details-marker{display:none}
+details>summary .chv{transition:transform .2s;color:var(--mu)}details[open]>summary .chv{transform:rotate(180deg)}
+.empty{text-align:center;padding:26px 14px;color:var(--mu)}.empty .ic{color:var(--au2);margin-bottom:6px}
+.dp{display:inline-flex;align-items:center;gap:6px;width:100%}.dp input[type=text]{flex:1;min-width:0;text-align:center}
+.dp .wrap{position:relative;display:inline-flex;width:44px;height:40px;align-items:center;justify-content:center;border:1px solid var(--bd);border-radius:11px;background:var(--s2)}
+.dp .wrap input[type=date]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.free-hero{background:linear-gradient(135deg,var(--au2),var(--au));color:#fff;border-radius:16px;padding:16px;margin:10px 0;display:flex;align-items:center;gap:12px;width:100%;text-align:right;transition:transform .12s}
+.free-hero:active{transform:scale(.98)}.free-hero div:nth-child(2){flex:1}
+.free-hero b{font-size:17px;display:block}.free-hero small{font-size:12px;opacity:.92}
+.free-hero .fi{width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex:none}
+@media(min-width:900px){.w{width:min(100% - 80px,940px)}body{font-size:16px}}
+#toast{position:fixed;bottom:84px;inset-inline:14px;margin:auto;max-width:520px;z-index:8;background:var(--s1);border:1px solid var(--au2);border-radius:13px;padding:11px 14px;font-size:14px;box-shadow:0 6px 18px rgba(0,0,0,.25);text-align:center;display:none}
+@media(max-width:520px){.task{flex-direction:column;align-items:flex-start}.ac{justify-content:flex-start}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<div class="w"><header id="hd"></header><div class="orn"><i></i></div><main id="app"></main></div>
+<nav id="nav"></nav><div id="toast"></div>
+<script>
+function __err(m){if(m==="Script error.")return;let b=document.getElementById("errb");if(!b){b=document.createElement("div");b.id="errb";b.style.cssText="position:fixed;top:0;inset-inline:0;z-index:9;background:#8e1a2b;color:#fff;padding:10px 14px;font-size:13px";b.onclick=()=>b.remove();document.body.appendChild(b)}b.textContent="حدث خطأ بسيط ولم تُفقد بياناتك. اضغط للإغلاق. ("+String(m).slice(0,80)+")"}
+addEventListener("error",e=>__err(e.message+" @"+e.lineno));addEventListener("unhandledrejection",e=>__err(String(e.reason&&e.reason.stack||e.reason)));
+</script>
+<script>
+/* PseudoPlan — الدراسة الحرة + محرك مرن + مراجعة متباعدة */
+const ADMIN_IDS=[1724919922,8897973122];
+const TG=window.Telegram&&Telegram.WebApp,CS=TG&&TG.CloudStorage,ME=(TG&&TG.initDataUnsafe&&TG.initDataUnsafe.user&&TG.initDataUnsafe.user.id)||0;
+if(TG){TG.ready();TG.expand();try{TG.disableVerticalSwipes&&TG.disableVerticalSwipes()}catch(e){}
+ try{TG.BackButton&&TG.BackButton.onClick(()=>{if(sid)sid=null;else view='subj';render()})}catch(e){}}
+
+const $=q=>document.querySelector(q),uid=()=>Math.random().toString(36).slice(2,10);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+
+const IC={
+home:'<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+cal:'<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>',
+book:'<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
+sliders:'<line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/>',
+sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+moon:'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
+plus:'<path d="M5 12h14"/><path d="M12 5v14"/>',
+trash:'<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>',
+check:'<path d="M20 6 9 17l-5-5"/>',chl:'<path d="m15 18-6-6 6-6"/>',chr:'<path d="m9 18 6-6-6-6"/>',chd:'<path d="m6 9 6 6 6-6"/>',
+video:'<path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/>',
+file:'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+flame:'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+clock:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+undo:'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+skip:'<polygon points="5 4 15 12 5 20 5 4"/><line x1="19" x2="19" y1="5" y2="19"/>',
+alert:'<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+repeat:'<path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>',
+help:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
+cap:'<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>',
+cloud:'<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>',
+edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+pen:'<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>'
+};
+const ic=(n,s=18)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||''}</svg>`;
+const ban=(c,i,h)=>`<div class="ban ${c}">${ic(i)}<div>${h}</div></div>`;
+const chv=()=>ic('chd',16).replace('class="ic"','class="ic chv"');
+
+const PT={mid:'النصفي',prac:'العملي',final:'الفاينل'};
+const TY={midterm:{label:'نصفي',scope:['mid'],safety:3},practical:{label:'عملي',scope:['prac'],safety:2},final:{label:'فاينل',scope:['final','mid'],safety:5}};
+const COL=['#a83245','#c0963f','#4d6cb8','#7c5a9c','#3f8f86','#b8683c','#7e8aa6','#8a9a45'];
+const DN=['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
+const DIF_MULT=[0,.4,.7,1,1.5,2.5],GAP=[1,2,4,7,16],RESERVE=.85,BUFFER=1.15,PART=1,SPDV={fast:.75,ok:1,slow:1.4},SPDL={fast:'أسرع',ok:'مناسب',slow:'أبطأ'};
+const TL={learn:'تعلّم',review:'مراجعة'},RL={forgot:'نسيت',hard:'صعب',good:'جيد',easy:'سهل'};
+
+const dflt=()=>({v:2,t:0,log:{},freeLog:{},setup:{days:[4,4,4,4,4,0,5],pg3:12},subjects:[],theme:'light',tc:0,dead:[]});
+let st=dflt(),CFG={qb:'https://t.me/Pseudoscien_Bot',notice:''};
+let view='today',sid=null,fo=false,taps=[],tmr,P=null,more=14,editId=null,ver=0,pc={k:'',p:null};
+let pending=false,busy=false,again=false,noPush=false,keep=false,sync=null,toastT=null;
+
+function toast(t){const b=$('#toast');b.textContent=t;b.style.display='block';clearTimeout(toastT);toastT=setTimeout(()=>b.style.display='none',3600)}
+const safeUrl=u=>/^https?:\/\//i.test(u||'')?u:'';
+const msg=t=>TG&&TG.showAlert?TG.showAlert(t):alert(t);
+const ask=(t,cb)=>TG&&TG.showConfirm?TG.showConfirm(t,ok=>{if(ok)cb()}):(confirm(t)&&cb());
+
+/* ===== تواريخ ===== */
+const D=s=>new Date(s+'T12:00:00');
+const ds=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const add=(s,n)=>{const d=D(s);d.setDate(d.getDate()+n);return ds(d)};
+const diff=(a,b)=>Math.round((D(b)-D(a))/864e5);
+const today=()=>ds(new Date());
+const fd=s=>'<bdi>'+new Intl.DateTimeFormat('ar-u-nu-latn',{weekday:'long',day:'numeric',month:'long'}).format(D(s))+'</bdi>';
+const sd=s=>new Intl.DateTimeFormat('ar-u-nu-latn',{day:'numeric',month:'long'}).format(D(s));
+const ayam=n=>n===0?'لا يوجد':n===1?'يوم واحد':n===2?'يومان':n<=10?n+' أيام':n+' يوماً';
+
+/* ===== تخزين ===== */
+const b64=u=>{let s='';for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(s)};
+const unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function gz(t){const w=new CompressionStream('gzip'),x=w.writable.getWriter();x.write(new TextEncoder().encode(t));x.close();return new Uint8Array(await new Response(w.readable).arrayBuffer())}
+async function gun(u){const w=new DecompressionStream('gzip'),x=w.writable.getWriter();x.write(u);x.close();return new TextDecoder().decode(await new Response(w.readable).arrayBuffer())}
+const pack=async t=>{try{if(self.CompressionStream)return 'Z:'+b64(await gz(t))}catch(e){}return t};
+const unpack=async t=>t.startsWith('Z:')?gun(unb64(t.slice(2))):t;
+const CHK=t=>{let h=5381;for(let i=0;i<t.length;i++)h=(h*33^t.charCodeAt(i))>>>0;return h.toString(36)};
+const cget=ks=>new Promise(r=>CS?CS.getItems(ks,(e,v)=>r(e?null:v||{})):r(null));
+const cset=(k,v)=>new Promise((ok,no)=>CS.setItem(k,v,(e,d)=>e||!d?no(e||1):ok()));
+const crem=ks=>new Promise(r=>ks.length&&CS?CS.removeItems(ks,()=>r()):r());
+const lsGet=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+
+async function readSlot(p){const[sl,n,sum]=p.split(','),ks=Array.from({length:+n},(_,i)=>'s'+sl+'_'+i),o=await cget(ks);if(!o)throw 0;
+ const j=ks.map(k=>o[k]||'').join('');if(CHK(j)!==sum)throw 0;return JSON.parse(await unpack(j))}
+async function pull(){
+  const m=await cget(['p','q','n']);if(!m)return{ok:false};
+  for(const k of['p','q'])if(m[k])try{return{ok:true,data:await readSlot(m[k]),p:m.p}}catch(e){}
+  return{ok:true,data:null,p:m.p}
+}
+/* [P3] دمج على مستوى العناصر: كل مادة تُدمج بمعرّفها، وداخلها الفيديوهات والشيتات والامتحانات بمعرّفاتها وupdatedAt،
+   مع علامات حذف rm لمنع عودة العناصر المحذوفة من نسخة قديمة. السبب: اختيار النسخة الأحدث كاملة كان يُسقط تعديلات الجهاز الآخر. */
+const clone=o=>JSON.parse(JSON.stringify(o));
+function pickItem(x,y){
+  const w=(y.updatedAt||0)>(x.updatedAt||0)?y:x,r={...w},np=Math.max(+x.np||0,+y.np||0);
+  if(np>0)r.np=np; /* np (عدد الأجزاء المثبّت) لا يتراجع أبداً كي لا تُيتَّم سجلات الأجزاء */
+  return r;
+}
+function mergeItems(a,b,rm){
+  const mb=new Map(b.map(i=>[i.id,i])),seen=new Set(),out=[];
+  a.forEach(i=>{seen.add(i.id);const j=mb.get(i.id);out.push(j?pickItem(i,j):i)});
+  b.forEach(j=>{if(!seen.has(j.id))out.push(j)});
+  return out.filter(i=>!(rm[i.id]>=(i.updatedAt||0)));
+}
+function mergeSub(x,y){ /* x من النسخة الأحدث (t)، y من الأقدم */
+  const nw=(y.updatedAt||0)>(x.updatedAt||0)?y:x,ol=nw===x?y:x,r=clone(nw),rm={};
+  [x.rm,y.rm].forEach(m=>Object.entries(m||{}).forEach(([k,v])=>{rm[k]=Math.max(rm[k]||0,+v||0)}));
+  if(Object.keys(rm).length)r.rm=rm;
+  ['videos','sheets','exams'].forEach(k=>{r[k]=clone(mergeItems(nw[k]||[],ol[k]||[],rm))});
+  const u=Math.max(x.updatedAt||0,y.updatedAt||0);if(u>0)r.updatedAt=u;
+  return r;
+}
+function mergeSt(a0,b0){
+  const a=norm(clone(a0)),b=norm(clone(b0)),n=(a.t||0)>=(b.t||0)?a:b,o=n===a?b:a,nJ=JSON.stringify(n);
+  const dead=[...new Set([...(n.dead||[]),...(o.dead||[])])],r=n;
+  const nm=new Map(n.subjects.map(s=>[s.id,s])),om=new Map(o.subjects.map(s=>[s.id,s])),subs=[];
+  n.subjects.forEach(s=>{const y=om.get(s.id);subs.push(y?mergeSub(s,y):s)});
+  o.subjects.forEach(s=>{if(!nm.has(s.id))subs.push(s)});
+  r.subjects=subs.filter(s=>!dead.includes(s.id));r.dead=dead;
+  const keys=(x,y)=>[...new Set([...Object.keys(x||{}),...Object.keys(y||{})])],lg={},fl={};
+  /* log: الأحدث حسب at (التراجع x له at أحدث فيفوز ولا يُحيي المُلغى)؛ عند التساوي تفوز النسخة الأحدث */
+  keys(n.log,o.log).forEach(k=>{const nv=(n.log||{})[k],ov=(o.log||{})[k];lg[k]=!ov?nv:!nv?ov:((ov.at||0)>(nv.at||0)?ov:nv)});
+  /* freeLog: الأحدث حسب at (السجلات القديمة بلا at = 0)، والمحذوف (dead) لا يعود */
+  keys(n.freeLog,o.freeLog).forEach(k=>{if(dead.includes(k))return;const nv=(n.freeLog||{})[k],ov=(o.freeLog||{})[k];fl[k]=!ov?nv:!nv?ov:((ov.at||0)>(nv.at||0)?ov:nv)});
+  r.log=lg;r.freeLog=fl;
+  r.t=JSON.stringify(r)===nJ?n.t:Math.max(a.t||0,b.t||0)+1;
+  return r;
+}
+/* [P3/توافق] تطبيع يقبل أي كائن حالة (محلي أو سحابي أو نسخة احتياطية) ويعيده؛ لا يضيف updatedAt/at/spType إن غابت
+   (غيابها = قديم = 0) كي لا تبدو البيانات القديمة أحدث من الجديدة، ولا يُسقط ما لا يعرف تفسيره */
+function norm(o){
+  o=o||st;
+  const S=o.setup=(o.setup&&typeof o.setup==='object')?o.setup:{};
+  if(!Array.isArray(S.days)||S.days.length!==7)S.days=[4,4,4,4,4,0,5];
+  if(!S.pg3)S.pg3=12;
+  if(!Array.isArray(o.subjects))o.subjects=[];
+  o.subjects=o.subjects.filter(s=>s&&typeof s==='object');
+  const fin=(x,k)=>{if(x[k]!=null){const v=+x[k];if(Number.isFinite(v)&&v>=0)x[k]=v;else delete x[k]}};
+  o.subjects.forEach(s=>{
+    ['videos','sheets','exams'].forEach(k=>{
+      s[k]=Array.isArray(s[k])?s[k].filter(i=>i&&typeof i==='object'):[];
+      s[k].forEach(i=>{fin(i,'updatedAt');if(i.np!=null){const v=Math.round(+i.np);if(v>0&&v<=1000)i.np=v;else delete i.np}});
+    });
+    s.exams.forEach(e=>{if(!Array.isArray(e.sc))e.sc=[...(TY[e.t]||TY.midterm).scope]});
+    if(!/^#[0-9a-f]{3,8}$/i.test(s.color||''))s.color=COL[0];
+    fin(s,'updatedAt');
+    if(s.rm!=null){
+      if(typeof s.rm==='object'&&!Array.isArray(s.rm))Object.keys(s.rm).forEach(k=>{const v=+s.rm[k];if(Number.isFinite(v))s.rm[k]=v;else delete s.rm[k]});
+      else delete s.rm;
+    }
+  });
+  if(!Array.isArray(o.dead))o.dead=[];
+  if(!o.log||typeof o.log!=='object')o.log={};
+  if(!o.freeLog||typeof o.freeLog!=='object')o.freeLog={};
+  Object.entries(o.log).forEach(([k,e])=>{
+    if(!e||typeof e!=='object'){delete o.log[k];return}
+    if(e.sp!=null){const v=+e.sp;if(v>0&&Number.isFinite(v))e.sp=clamp(v,.5,2.5);else{delete e.sp;delete e.spType}}
+    if(e.sp&&e.spType!=null&&!hasT(e.spType))delete e.spType;
+    if(e.sp&&!e.spType){const ty=typeOfLogId(k,o.subjects);if(ty)e.spType=ty} /* استدلال من مصدر السجل؛ إن تعذّر يبقى بلا نوع */
+  });
+  Object.values(o.freeLog).forEach(f=>{if(f&&typeof f==='object')fin(f,'at')});
+  if(!(o.v>=2))o.v=2;
+  return o;
+}
+function prune(){
+  const ok=new Set();
+  st.subjects.forEach(s=>{ok.add(s.id);s.videos.forEach(v=>ok.add(v.id));s.sheets.forEach(x=>ok.add(x.id))});
+  for(const k in st.log)if(k[0]==='L'&&!ok.has(k.slice(1).replace(/~\d+$/,'')))delete st.log[k];
+  for(const k in st.log)if(st.log[k].s==='x'&&Date.now()-(st.log[k].at||0)>2592e6)delete st.log[k];
+  for(const k in st.freeLog)if(!ok.has(st.freeLog[k].sid))delete st.freeLog[k];
+}
+
+/* ===== المحرك ===== */
+const sub=id=>st.subjects.find(s=>s.id===id),cur=()=>sub(sid),sn=id=>(sub(id)||{name:'؟'}).name,val=id=>($('#'+id)||{}).value||'';
+const PRE=n=>/كيمياء حيوية|باثولوج|باثو|أدوية|صيدل/.test(n)?5:/تشريح|فسيولوج|ميكروب|مناعة|جراحة|باطنة/.test(n)?4:/أخلاق|إحصاء|ثقافة|صحة عامة|تواصل/.test(n)?2:3;
+const difOf=(s,x)=>x.d>0?x.d:clamp(PRE(s.name||''),1,5);
+let SPD=1;
+/* [P5] معامل سرعة مستقل لكل نوع عمل. SPD يبقى المتوسط العام (كل التقييمات) للتوافق مع vSet وغيره */
+const SPD_BY_TYPE={sheet:1,video:1,review:1};
+const SPD_MIN=.6,SPD_MAX=2,SPD_K=3,SPD_N=10;
+const hasT=t=>Object.prototype.hasOwnProperty.call(SPD_BY_TYPE,t);
+/* نوع السجل من مصدره: R=مراجعة، L+معرّف فيديو/شيت (مع ~جزء)؛ null إن تعذّر فلا يُنسب لنوع عشوائي */
+const typeOfLogId=(id,subs)=>{
+  if(typeof id!=='string')return null;
+  if(id[0]==='R')return 'review';
+  if(id[0]!=='L')return null;
+  const b=id.slice(1).replace(/~\d+$/,'');
+  for(const s of (subs||st.subjects)){
+    if((s.videos||[]).some(v=>v.id===b))return 'video';
+    if((s.sheets||[]).some(x=>x.id===b))return 'sheet';
+  }
+  return null;
+};
+/* [P5] calcSpd: لكل نوع آخر 10 تقييمات من نوعه فقط، بمتوسط مُقلَّص نحو 1 بوزن SPD_K (عينة واحدة لا تقفز بالمعامل)،
+   وحدّان [0.6, 2]. التقييم الأبطأ (>1) يرفع الوقت والأسرع (<1) يخفضه. تعيد المتوسط العام وتحدّث SPD_BY_TYPE. */
+function calcSpd(){
+  const by={sheet:[],video:[],review:[]},all=[];
+  Object.entries(st.log).forEach(([k,e])=>{
+    if(!e||e.s!=='done'||!(+e.sp>0))return;
+    const r={v:clamp(+e.sp,.5,2.5),at:e.at||0};all.push(r);
+    const ty=(e.spType&&hasT(e.spType))?e.spType:typeOfLogId(k);
+    if(ty&&by[ty])by[ty].push(r);
+  });
+  const avg=a=>{a=a.sort((x,y)=>y.at-x.at).slice(0,SPD_N);return clamp((a.reduce((s,x)=>s+x.v,0)+SPD_K)/(a.length+SPD_K),SPD_MIN,SPD_MAX)};
+  Object.keys(by).forEach(t=>{SPD_BY_TYPE[t]=avg(by[t])});
+  return avg(all);
+}
+/* [P5] وقت الشيتات يستخدم معامل الشيتات فقط */
+const minPerPage=d=>(st.setup.pg3||12)*DIF_MULT[d]*SPD_BY_TYPE.sheet;
+const q25=h=>Math.max(.25,Math.round(h*4)/4);
+const capOf=d=>(st.setup.days[D(d).getDay()]||0)*RESERVE;
+
+/* [P5] الفيديوهات تتأثر بمعامل الفيديو فقط، والشيتات بمعامل الشيتات (عبر minPerPage) */
+function units(s){
+  const U=[],vk=SPD_BY_TYPE.video;
+  s.videos.forEach(v=>U.push({id:v.id,sid:s.id,p:v.p,k:'v',t:v.n,h:Math.max(.25,v.h*vk),d:3,np:v.np}));
+  s.sheets.forEach(x=>{const d=difOf(s,x);U.push({id:x.id,sid:s.id,p:x.p,k:'s',t:x.n,h:Math.max(.25,x.pg*minPerPage(d)/60),d,np:x.np})});
+  return U;
+}
+/* [P4] التقسيم الآمن: حجم الجزء ≤ min(ساعة، أكبر سعة يومية فعلية) وبحد أدنى 0.25 س وسقف MAXP جزء.
+   الأجزاء المثبّتة (np) تحتفظ بمعرّفاتها؛ ولا يزيد عددها إلا إذا كبر الجزء عن السعة (تُضاف أجزاء بمعرّفات جديدة بعد الموجودة،
+   فلا تضيع سجلات الأجزاء القديمة). */
+const MINPART=.25,MAXP=400;
+const maxDayCap=()=>Math.max(0,...st.setup.days.map(x=>+x||0))*RESERVE;
+const chunkH=()=>{const m=maxDayCap();return m>=PART?PART:Math.max(MINPART,Math.floor(m*4+1e-9)/4)};
+const nParts=u=>{const ch=chunkH(),need=clamp(Math.ceil(u.h/ch-1e-9),1,MAXP);return u.np>0?(u.h/u.np>ch+1e-9?Math.max(u.np,need):u.np):need};
+const parts=u=>{const n=nParts(u);return Array.from({length:n},(_,i)=>({id:'L'+u.id+(n>1?'~'+i:''),t:n>1?u.t+' ('+(i+1)+'/'+n+')':u.t,h:u.h/n,k:u.k}))};
+const freeze=bid=>st.subjects.forEach(s=>{const it=s.videos.concat(s.sheets).find(x=>x.id===bid);if(it&&!it.np){const u=units(s).find(x=>x.id===bid);if(u)it.np=parts(u).length}});
+const doneOn=u=>{const f=st.log['L'+u.id];if(f&&f.s==='done')return f.on;const ls=parts(u).map(p=>st.log[p.id]);return ls.every(l=>l&&l.s==='done')?ls.reduce((m,l)=>l.on>m?l.on:m,''):null};
+
+function horizon(t0){
+  let last='';
+  st.subjects.forEach(s=>s.exams.forEach(e=>{if(e.date>=t0&&e.date>last)last=e.date}));
+  return last||add(t0,28);
+}
+/* [P5] وقت المراجعة يستخدم معامل المراجعات */
+const revH=h=>Math.min(1,q25(h*.15*SPD_BY_TYPE.review));
+/* [P2] موضوع مراجعة مستقل لكل جزء مكتمل فعلاً (p.id معرّفاً، p.t عنواناً، مع partIdx/totalParts) دون انتظار بقية الوحدة.
+   legacy=u.id للاستفادة من سلاسل المراجعة القديمة المبنية على معرّف الوحدة. الدراسة الحرة كما هي. */
+function topics(){
+  const T=[];
+  st.subjects.forEach(s=>units(s).forEach(u=>{
+    const w=st.log['L'+u.id],ps=parts(u);
+    if(w&&w.s==='done'){T.push({key:'L'+u.id,legacy:u.id,base:w.on,title:u.t,h:u.h,sid:s.id,free:false,partIdx:0,totalParts:1,unit:u.id});return}
+    ps.forEach((p,i)=>{const l=st.log[p.id];if(l&&l.s==='done')T.push({key:p.id,legacy:u.id,base:l.on,title:p.t,h:p.h,sid:s.id,free:false,partIdx:i,totalParts:ps.length,unit:u.id})});
+  }));
+  Object.entries(st.freeLog).forEach(([id,f])=>{if(sub(f.sid))T.push({key:'F'+id,legacy:null,base:f.on,title:f.title,h:f.hours,sid:f.sid,free:true,partIdx:0,totalParts:1})});
+  return T;
+}
+/* سلسلة مراجعة لكل موضوع: الموعد التالي يُحسب من آخر مراجعة فعلية ونتيجتها.
+   جيد: مستوى+1 · سهل: مستوى+2 · صعب: نفس المستوى بفاصل أقصر · نسيت: يرجع للبداية.
+   [P2] legacy: تُقرأ سجلات المراجعة القديمة (R+معرّف الوحدة) إن لم يوجد سجل بالمفتاح الجديد، فلا تبدأ السلسلة من جديد */
+function chain(base,key,legacy){
+  let L=0,due=add(base,GAP[0]);
+  for(let j=0;j<12;j++){
+    const id='R'+key+'_'+j,e=st.log[id]||(legacy?st.log['R'+legacy+'_'+j]:null);
+    if(e&&e.s==='done'){
+      const r=e.r||'good';
+      L=r==='forgot'?0:r==='hard'?L:r==='easy'?L+2:L+1;
+      if(L>=GAP.length)return{level:L,mastered:true};
+      due=add(e.on,r==='hard'?Math.max(1,Math.round(GAP[L]*.6)):GAP[L]);
+      continue;
+    }
+    return{id,due,level:L};
+  }
+  return{level:L,mastered:true};
+}
+const isDone=id=>(st.log[id]||{}).s==='done';
+const CUMGAP=GAP.reduce((a,g)=>{a.push((a.length?a[a.length-1]:0)+g);return a},[]);
+const stagesBefore=d=>CUMGAP.filter(x=>x<=d).length;
+const studyDl=(e,t0)=>{const d=add(e.date,-(TY[e.t]||TY.midterm).safety);return d<t0?t0:d};
+/* ساعات أُنجزت في يوم معيّن (أجزاء + مراجعات + دراسة حرة): تُخصم من سعة اليوم */
+const usedOn=d0=>{
+  let h=0;
+  st.subjects.forEach(s=>units(s).forEach(u=>{
+    const w=st.log['L'+u.id];if(w&&w.s==='done'){if(w.on===d0)h+=u.h;return}
+    parts(u).forEach(p=>{const l=st.log[p.id];if(l&&l.s==='done'&&l.on===d0)h+=p.h});
+  }));
+  Object.entries(st.log).forEach(([k,e])=>{if(k[0]==='R'&&e.s==='done'&&e.on===d0)h+=e.h||0});
+  Object.values(st.freeLog).forEach(f=>{if(f.on===d0)h+=f.hours});
+  return h;
+};
+/* مراجعات موضوع متوقعة حتى موعد dl بافتراض تقييم «جيد» */
+function revUntil(T,dl,t0){
+  const c=chain(T.base,T.key,T.legacy);if(c.mastered)return 0;
+  let n=0,L=c.level,due=c.due<t0?t0:c.due;
+  while(L<GAP.length&&due<=dl){n++;L++;if(L<GAP.length)due=add(due,GAP[L])}
+  return n*revH(T.h);
+}
+/* [P1] جدوى كل مادة لها امتحان قادم على حدة، بمنطق «أقرب موعد أولاً»: كل مادة تُقيَّم حتى موعد دراستها
+   (تاريخ الامتحان − هامش النوع، كما تفعل makePlan)، والحمل تراكمي على امتحانات المادة، وساعات المواد ذات المواعيد الأبكر
+   تُخصم من المتاح للمواد الأخرى فلا تُحتسب الساعات نفسها مرتين. المنجَز لا يُحتسب (يُخصم من الحمل ومن سعة اليوم). */
+function feasSubjects(t0){
+  const TT=topics(),used=usedOn(t0),ents=[];
+  st.subjects.forEach(s=>{
+    const up=s.exams.filter(e=>e.date>=t0).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+    if(!up.length)return;
+    const sh=up.map(()=>0),nr=up.map(()=>0),dls=up.map(e=>studyDl(e,t0));
+    units(s).forEach(u=>{
+      if(doneOn(u))return;
+      let i=up.findIndex(e=>e.sc.includes(u.p));if(i<0)i=0; /* نفس قاعدة الإسناد في makePlan */
+      const dd=Math.max(0,diff(t0,dls[i]));
+      parts(u).forEach(p=>{if(!isDone(p.id)){sh[i]+=p.h;nr[i]+=Math.min(3,stagesBefore(dd))*revH(p.h)}});
+    });
+    let cs=0,cr=0;
+    up.forEach((e,k)=>{
+      cs+=sh[k];cr+=nr[k];
+      const old=TT.filter(T=>T.sid===s.id).reduce((a,T)=>a+revUntil(T,dls[k],t0),0);
+      ents.push({sid:s.id,exam:e,dl:dls[k],study:cs,rev:cr+old});
+    });
+  });
+  const capT=dl=>{let h=0,n=0;for(let d=t0;d<=dl&&n++<800;d=add(d,1))h+=d===t0?Math.max(0,capOf(d)-used):capOf(d);return h};
+  ents.sort((a,b)=>a.dl<b.dl?-1:a.dl>b.dl?1:a.exam.date<b.exam.date?-1:a.exam.date>b.exam.date?1:(b.study+b.rev)-(a.study+a.rev));
+  const cons={};
+  ents.forEach(en=>{
+    const oth=Object.keys(cons).reduce((a,k)=>a+(k===en.sid?0:cons[k]),0),need=(en.study+en.rev)*BUFFER,avail=Math.max(0,capT(en.dl)-oth);
+    Object.assign(en,{need,avail,deficit:Math.max(0,need-avail),ok:need<=avail+1e-9});
+    cons[en.sid]=Math.min(need,avail);
+  });
+  const by={};
+  ents.forEach(en=>{const c=by[en.sid];if(!c||en.deficit>c.deficit+1e-9||(Math.abs(en.deficit-c.deficit)<=1e-9&&(en.avail-en.need)<(c.avail-c.need)))by[en.sid]=en});
+  return st.subjects.filter(s=>by[s.id]).map(s=>{const en=by[s.id];
+    return{sid:s.id,ok:en.ok,need:en.need,avail:en.avail,deficit:en.deficit,exam:en.exam,days:Math.max(0,diff(t0,en.exam.date)),rest:Math.max(0,en.avail-en.need),rev:en.rev,study:en.study}});
+}
+/* الجدوى العامة (أفق الخطة المشترك) كما كانت، مع مراجعات على مستوى الجزء، + perSubject/worst/allOk.
+   ملاحظة توافق: rest في المستوى العام ما زال «ساعات الدراسة المتبقية» (study)، أما rest داخل perSubject فهو الفائض بعد الحمل. */
+function feasibility(t0){
+  let study=0,rev=0;
+  st.subjects.forEach(s=>units(s).forEach(u=>{
+    if(doneOn(u))return;
+    parts(u).forEach(p=>{if(!isDone(p.id)){study+=p.h;rev+=3*revH(p.h)}});
+  }));
+  topics().forEach(T=>{const c=chain(T.base,T.key,T.legacy);if(!c.mastered)rev+=revH(T.h)*Math.min(3,GAP.length-c.level)});
+  const last=horizon(t0);let avail=0;
+  for(let d=t0;d<last;d=add(d,1))avail+=capOf(d);
+  const need=(study+rev)*BUFFER,per=feasSubjects(t0),bad=per.filter(x=>!x.ok),ok=avail>=need;
+  const worst=bad.reduce((m,x)=>!m||x.deficit>m.deficit?x:m,null);
+  return{ok,allOk:ok&&!bad.length,need,avail,deficit:Math.max(0,need-avail),days:Math.max(1,diff(t0,last)),rest:study,study,rev,last,perSubject:per,worst};
+}
+/* [P2] المراجعات تُبنى من موضوعات الأجزاء، وتحمل partIdx/totalParts */
+function buildRevisions(t0){
+  const R={};let mast=0,act=0;
+  topics().forEach(T=>{
+    const c=chain(T.base,T.key,T.legacy);
+    if(c.mastered){mast++;return}
+    act++;
+    R[c.id]={sid:T.sid,due:c.due<t0?t0:c.due,title:'مراجعة: '+T.title,hours:revH(T.h),stage:c.level+1,free:T.free,partIdx:T.partIdx,totalParts:T.totalParts};
+  });
+  return{R,mast,act};
+}
+
+/* [P4/P1/P2] makePlan: fits لا يسمح بتجاوز سعة اليوم أبداً (التقسيم يتم في parts)، وما لا يتّسع يظهر في uns بعلامة manual؛
+   وتستهلك feasibility/buildRevisions الجديدتين، وتمرّر sp للمراجعات المنجزة ليُقيَّم وقتها */
+function makePlan(t0){
+  SPD=calcSpd();
+  if(!st.subjects.length)return null;
+  const{R:revs,mast,act}=buildRevisions(t0),all=[],days={},last=horizon(t0),feas=feasibility(t0);
+  if(!feas.rest&&!Object.keys(revs).length&&!Object.keys(st.freeLog).length&&!Object.keys(st.log).length)return null;
+  const dayOf=d=>days[d]||(days[d]={date:d,cap:capOf(d),used:0});
+  for(let d=t0;d<=last;d=add(d,1))dayOf(d);
+
+  const learn=[];
+  st.subjects.forEach(s=>units(s).forEach(u=>{
+    const w=st.log['L'+u.id];
+    if(w&&w.s==='done'){all.push({id:'L'+u.id,type:'learn',sid:s.id,title:u.t,hours:u.h,date:w.on,st:'done',k:u.k,sp:w.sp});return}
+    const up=s.exams.filter(e=>e.date>=t0).sort((a,b)=>a.date<b.date?-1:1);
+    const ex=up.find(e=>e.sc.includes(u.p))||up[0];
+    const dl0=ex?add(ex.date,-TY[ex.t].safety):add(t0,28),dl=dl0<t0?t0:dl0;
+    parts(u).forEach(p=>{
+      const l=st.log[p.id];
+      if(l&&l.s==='done'){all.push({id:p.id,type:'learn',sid:s.id,title:p.t,hours:p.h,date:l.on,st:'done',k:u.k,sp:l.sp});return}
+      learn.push({id:p.id,type:'learn',sid:s.id,title:p.t,hours:p.h,deadline:dl,from:l&&l.s==='skip'&&l.on===t0?add(t0,1):t0,d:u.d,k:u.k});
+    });
+  }));
+  Object.entries(st.log).forEach(([k,e])=>{if(k[0]==='R'&&e.s==='done'&&e.on===t0)all.push({id:k,type:'review',sid:e.sid,title:e.t,hours:e.h,date:t0,st:'done',r:e.r,free:e.f,sp:e.sp})});
+  all.filter(t=>t.st==='done'&&t.date===t0).forEach(t=>dayOf(t0).used+=t.hours);
+  Object.values(st.freeLog).forEach(f=>{if(f.on===t0)dayOf(t0).used+=f.hours});
+
+  const rq=Object.entries(revs).map(([id,r])=>({id,type:'review',...r})).sort((a,b)=>a.due<b.due?-1:a.due>b.due?1:0);
+  const rem={};learn.forEach(t=>rem[t.sid]=(rem[t.sid]||0)+t.hours);
+  /* عند تساوي الموعد: المادة الأثقل عبئاً أولاً، ثم الأصعب */
+  learn.sort((a,b)=>a.deadline<b.deadline?-1:a.deadline>b.deadline?1:(rem[b.sid]-rem[a.sid])||b.d-a.d);
+  const place=(t,d)=>{const dy=dayOf(d);t.over=dy.used+t.hours>dy.cap+1e-9;t.date=d;dy.used+=t.hours;all.push(t)};
+  /* [P4] fits: لا يُجدوَل أي جزء أكبر من السعة المتاحة فعلاً لليوم، حتى لو كان اليوم فارغاً (حُذف استثناء اليوم الفارغ).
+     التقسيم يتم قبلها في parts()؛ ما لا يتّسع في أي يوم يبقى ضمن غير المتسعة بعلامة manual ولا يُجدوَل بصمت */
+  const fits=(dy,h)=>dy.used+h<=dy.cap+1e-9;
+  for(let d=t0;d<=last;d=add(d,1)){
+    const dy=dayOf(d);if(!dy.cap)continue;
+    for(let i=0;i<rq.length;i++){const r=rq[i];if(r.due<=d&&fits(dy,r.hours)){rq.splice(i--,1);place(r,d)}}
+    for(let i=0;i<learn.length;i++){const t=learn[i];if(t.from<=d&&t.deadline>=d&&fits(dy,t.hours)){learn.splice(i--,1);place(t,d)}}
+  }
+  const mc=maxDayCap(),uns=[...rq.filter(r=>r.due<=last),...learn].map(t=>({...t,date:null,manual:t.hours>mc+1e-9}));
+  all.push(...uns);
+  return{all,uns,feas,revs,mast,act,days:Object.values(days).sort((a,b)=>a.date<b.date?-1:1)};
+}
+
+function streak(t0){
+  const on=new Set(Object.values(st.log).filter(e=>e.s==='done').map(e=>e.on));
+  Object.values(st.freeLog).forEach(f=>on.add(f.on));
+  let d=on.has(t0)?t0:add(t0,-1),n=0;
+  while(on.has(d)){n++;d=add(d,-1)}
+  return n;
+}
+
+/* ===== حقل التاريخ ===== */
+const dp=(attrs,v,id)=>`<span class="dp"><input type="text" inputmode="numeric" dir="ltr" maxlength="10" placeholder="DD/MM/YYYY" data-dt ${id?`id="${id}_t"`:''} value="${v?v.split('-').reverse().join('/'):''}">
+  <span class="wrap">${ic('cal',19)}<input type="date" data-dn value="${v||''}"></span><input type="hidden" ${attrs} value="${v||''}"></span>`;
+const setDt=(w,iso)=>{
+  const[y,m,d]=iso.split('-').map(Number);
+  if(!(y>=2000)||new Date(y,m-1,d).getMonth()!==m-1){msg('تاريخ غير صحيح.');return}
+  const h=w.querySelector('input[type=hidden]');
+  w.querySelector('[data-dt]').value=String(d).padStart(2,'0')+'/'+String(m).padStart(2,'0')+'/'+y;
+  w.querySelector('[data-dn]').value=iso;
+  if(h.value!==iso){h.value=iso;h.dispatchEvent(new Event('change',{bubbles:true}))}
+};
+document.addEventListener('input',e=>{
+  const t=e.target;if(!t.dataset||t.dataset.dt===undefined)return;
+  const d=t.value.replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632).replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776).replace(/\D/g,'').slice(0,8);
+  t.value=d.length>4?d.slice(0,2)+'/'+d.slice(2,4)+'/'+d.slice(4):d.length>2?d.slice(0,2)+'/'+d.slice(2):d;
+  if(d.length===8)setDt(t.closest('.dp'),d.slice(4)+'-'+d.slice(2,4)+'-'+d.slice(0,2));
+},true);
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.dn!==undefined){e.stopPropagation();if(t.value)setDt(t.closest('.dp'),t.value)}},true);
+
+/* ===== الواجهات ===== */
+const freeForm=()=>`<div class="card g" style="border:2px solid var(--au2)">
+  <div class="row sp"><b>سجّل ما درسته</b><button class="sm x" data-a="freeCancel" aria-label="إغلاق">${ic('trash',14)}</button></div>
+  <label>المادة<select id="fl_sid">${st.subjects.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select></label>
+  <label>ماذا درست؟<input id="fl_title" placeholder="مثال: الجهاز الهضمي"></label>
+  <label>كم ساعة؟<input id="fl_hours" type="number" step="0.25" min="0.25" value="1"></label>
+  <button class="b" data-a="freeSave">${ic('check',16)}حفظ وبناء المراجعات</button></div>`;
+
+/* [P1] vToday: تنبيه مستقل لكل مادة غير ممكنة قبل امتحانها بدل تنبيه عام قد يُضلّل */
+function vToday(){
+  const t0=today();
+  if(!st.subjects.length)return `<h1>أهلاً بك</h1><div class="card empty">${ic('cap',30)}<div>ابدأ بخطتك الأولى في دقيقة: مادة، وموعد امتحانها، وعدد ساعات منهجها.</div></div>
+    <div class="card g"><b>إعداد سريع</b>
+      <label>اسم المادة<input id="qn" placeholder="مثال: التشريح"></label>
+      <div class="g g2"><label>نوع الامتحان<select id="qt">${Object.entries(TY).map(([k,v])=>`<option value="${k}" ${k==='final'?'selected':''}>${v.label}</option>`).join('')}</select></label>
+        <label>ساعات المنهج تقريباً<input id="qh" type="number" min="1" max="200" step="0.5" value="20"></label></div>
+      <label>تاريخ الامتحان${dp('id="qd"','','qd')}</label>
+      <button class="b" data-a="quick">${ic('check',16)}ابنِ الخطة</button></div>
+    <button class="b2" data-a="tab" data-t="subj" style="width:100%">${ic('book')}إعداد تفصيلي (فيديوهات وشيتات)</button>`;
+  const tt=P?P.all.filter(t=>t.date===t0):[],feas=P&&P.feas;
+  const ft=Object.entries(st.freeLog).filter(([,f])=>f.on===t0);
+  const fh=ft.reduce((a,[,f])=>a+f.hours,0);
+  const tot=tt.reduce((a,t)=>a+t.hours,0)+fh,dn=tt.filter(t=>t.st==='done').reduce((a,t)=>a+t.hours,0)+fh;
+  let h=`<h1>${fd(t0)}</h1>`;
+  if(CFG.notice)h+=ban('','help',esc(CFG.notice));
+  if(fo)h+=freeForm();
+  else h+=`<button class="free-hero" data-a="freeLog"><div class="fi">${ic('pen',24)}</div><div><b>سجّل ما درسته اليوم</b><small>دراسة حرة — تُبنى لها مراجعات تلقائياً</small></div></button>`;
+  if(safeUrl(CFG.qb))h+=`<a class="b2" href="${esc(safeUrl(CFG.qb))}" target="_blank" rel="noopener" style="width:100%;text-decoration:none">${ic('help',16)}بنك الأسئلة</a>`;
+  if(P&&P.mast+P.act>0)h+=`<p class="mu">متقَن: ${P.mast} · قيد المراجعة: ${P.act}</p>`;
+  const sk=streak(t0);
+  if(sk>0)h+=`<div class="card row" style="justify-content:center;background:linear-gradient(135deg,var(--au2),var(--au));color:#fff;border:0;padding:10px">${ic('flame',18)}<b>سلسلة: ${ayam(sk)} متتابعة</b></div>`;
+  /* [P1] تنبيه لكل مادة لا يكفيها وقتها قبل امتحانها؛ ولا يُعرض «خطتك متوازنة» ما دامت إحدى المواد غير ممكنة */
+  if(feas){
+    const bad=(feas.perSubject||[]).filter(x=>!x.ok).sort((a,b)=>b.deficit-a.deficit);
+    bad.slice(0,4).forEach(x=>{h+=ban('warn','alert',`<b>${esc(sn(x.sid))}: الوقت لا يكفي قبل امتحان ${esc((TY[x.exam.t]||{label:''}).label)}</b><br>الامتحان ${x.days===0?'اليوم':'بعد '+ayam(x.days)} (<bdi>${sd(x.exam.date)}</bdi>) · تحتاج ≈ ${x.need.toFixed(1)} س والمتاح ${x.avail.toFixed(1)} س · العجز التقريبي ${x.deficit.toFixed(1)} س.`)});
+    if(bad.length>4)h+=`<p class="mu">و${bad.length-4} مواد أخرى لا يكفيها الوقت.</p>`;
+    if(feas.ok&&!bad.length)h+=ban('ok','check',`<b>خطتك متوازنة</b><br>دراسة ${feas.rest.toFixed(1)} س + مراجعات ${feas.rev.toFixed(1)} س تتسع في وقتك حتى الامتحان.`);
+    else{
+      if(!feas.ok)h+=ban('warn','alert',`<b>منهجك أكبر من وقتك</b><br>تحتاج ${feas.need.toFixed(1)} ساعة (دراسة ${feas.rest.toFixed(1)} + مراجعات ${feas.rev.toFixed(1)} + احتياط)، المتاح ${feas.avail.toFixed(1)}. الفرق ${feas.deficit.toFixed(1)} ساعة.`);
+      const nd=Math.min(24,Math.ceil(Math.max(feas.ok?0:feas.need/feas.days,...bad.map(x=>x.need/Math.max(1,x.days)))/RESERVE*2)/2)||1;
+      h+=`<div class="card g"><b>كيف تتكيّف الخطة؟</b>
+        <button class="b" data-a="sol1" data-h="${nd}">${ic('clock',16)}ارفع ساعاتك إلى ${nd} ساعة/يوم</button>
+        <button class="b2" data-a="sol3">${ic('help',16)}قلّل من المنهج يدوياً</button></div>`;
+    }
+  }
+  if(tot>0)h+=`<div class="hero"><div class="row sp"><b>إنجاز اليوم</b><b>${dn.toFixed(1)} / ${tot.toFixed(1)} س</b></div>
+    <div class="bar"><i style="width:${Math.round(dn/tot*100)}%"></i></div>
+    <div class="stt"><span>${ic('check',15)}${tt.filter(t=>t.st==='done').length+ft.length} من ${tt.length+ft.length} مهمة</span></div></div>`;
+  if(ft.length)h+=`<h2>درست اليوم (حر)</h2>`+ft.map(([id,f])=>{
+    const rv=Object.entries(P?P.revs:{}).filter(([k])=>k.startsWith('RF'+id+'_')).map(([,r])=>r.due).sort().slice(0,1);
+    return `<div class="task" style="--tc:var(--ok)"><div><span class="tg free">${ic('pen',13)}دراسة حرة</span><b>${esc(f.title)}</b>
+    <small>${esc(sn(f.sid))} · ${f.hours} ساعة</small>${rv.length?`<small style="display:block;color:var(--au)">${ic('repeat',12)} المراجعة القادمة: ${rv.map(d=>'<bdi>'+sd(d)+'</bdi>').join(' · ')}</small>`:''}</div>
+    <div class="ac"><button class="sm x" data-a="delFree" data-id="${id}" aria-label="حذف">${ic('trash',14)}</button></div></div>`}).join('');
+  h+=`<h2>مهام اليوم</h2>`+(tt.length?tt.map(taskH).join(''):`<div class="card empty">${ic('check',26)}<div>لا مهام مخططة اليوم.</div><p class="mu">اقتراح: سجّل دراسة حرة، أو افتح مادة لم تكملها.</p>${fo?'':`<button class="b2" data-a="freeLog" style="margin-top:6px">${ic('pen',16)}سجّل دراسة</button>`}</div>`);
+  return h+unsH();
+}
+/* [P4] unsH: توضيح أن المهام الأكبر من سعة أي يوم تحتاج تعديلاً يدوياً */
+const unsH=()=>{
+  if(!P||!P.uns.length)return'';
+  const tot=P.uns.reduce((a,t)=>a+t.hours,0);
+  return `<details class="card"><summary class="row sp"><b class="row" style="gap:7px">${ic('alert',17)}مهام لم تتسع (${P.uns.length} · ${tot.toFixed(1)} س)</b>${chv()}</summary>
+    <p class="mu">الحل: ارفع ساعاتك أو قلّل المنهج.</p>
+    ${P.uns.slice(0,20).map(t=>`<div class="task" style="--tc:${(sub(t.sid)||{}).color}"><div><span class="tg ${t.type}${t.free?' free':''}">${TL[t.type]}</span><b>${esc(t.title)}</b><small>${t.hours.toFixed(1)} س</small>${t.manual?'<small style="display:block;color:var(--wf)">أكبر من سعة أي يوم — تحتاج تعديلاً يدوياً (زد ساعات اليوم)</small>':''}</div></div>`).join('')}
+    ${P.uns.length>20?`<p class="mu">و${P.uns.length-20} مهمة أخرى.</p>`:''}</details>`;
+};
+/* [P5] taskH: أزرار «الوقت كان» تظهر للشيتات والفيديوهات والمراجعات (لكل نوع معامله)؛ تحذير التجاوز يظهر فقط لـ over الفعلي */
+const taskH=t=>{
+  const d=t.st==='done',rv=t.type==='review',col=(sub(t.sid)||{}).color||'var(--au2)';
+  const acts=d?`<button class="sm" data-a="undo" data-id="${t.id}">${ic('undo',14)}تراجع</button>`
+      +((rv||t.k==='s'||t.k==='v')&&!t.sp&&t.date===today()?`<span class="mu">الوقت كان:</span>`+Object.keys(SPDL).map(r=>`<button class="sm" data-a="spd" data-id="${t.id}" data-r="${r}">${SPDL[r]}</button>`).join(''):'')
+    :rv?Object.keys(RL).map(r=>`<button class="sm" data-a="rate" data-id="${t.id}" data-r="${r}">${RL[r]}</button>`).join('')
+    :`<button class="sm on" data-a="done" data-id="${t.id}">${ic('check',14)}إنجاز</button><button class="sm" data-a="skip" data-id="${t.id}">${ic('skip',14)}غداً</button>`;
+  return `<div class="task ${d?'dn':''}" style="--tc:${col}"><div><span class="tg ${t.type}${t.free?' free':''}">${ic(rv?'repeat':'video',13)}${TL[t.type]}${t.free?' · حر':''}</span>
+    <b>${esc(t.title)}</b><small>${esc(sn(t.sid))} · ${t.hours.toFixed(1)} س${t.r?' · '+RL[t.r]:''}</small>${t.over?'<small style="display:block;color:var(--wf)">تتجاوز وقتك اليومي المحدد</small>':''}</div>
+    <div class="ac">${acts}</div></div>`;
+};
+function vPlan(){
+  if(!P)return `<h1>الخطة</h1><div class="card empty">${ic('cal',30)}<div>أضف مواد وفيديوهات وشيتات أولاً.</div></div>`;
+  let h=`<h1>الخطة القادمة</h1>`+unsH();
+  P.days.slice(0,more).forEach(d=>{
+    const tt=P.all.filter(t=>t.date===d.date),hh=tt.reduce((a,t)=>a+t.hours,0);
+    if(!tt.length&&d.date!==today())return;
+    h+=`<details class="card" ${d.date===today()?'open':''}><summary class="row sp"><span>${fd(d.date)}</span>
+      <span class="mu row" style="gap:6px">${d.cap?hh.toFixed(1)+' س':'راحة'}${chv()}</span></summary>${tt.map(taskH).join('')||'<p class="mu">لا مهام.</p>'}</details>`;
+  });
+  return h+(more<P.days.length?`<p style="text-align:center"><button class="b2" data-a="more">${ic('plus',16)}أسابيع إضافية</button></p>`:'');
+}
+function vList(){
+  let h=`<h1>المواد</h1><div class="card g g2"><label>اسم المادة<input id="nn" placeholder="مثال: التشريح"></label>
+    <label>عدد المستندات (للعلم فقط)<input id="nd" type="number" min="0" value="0"></label>
+    <button class="b" data-a="addSub" style="grid-column:1/-1">${ic('plus')}إضافة مادة</button></div>`;
+  if(!st.subjects.length)h+=`<p class="mu">لا مواد بعد.</p>`;
+  return h+st.subjects.map(s=>`<div class="card row sp" data-a="open" data-id="${s.id}" style="cursor:pointer"><div>
+    <b><i class="dot" style="background:${s.color}"></i>${esc(s.name)}</b>
+    <div class="mu">${s.videos.length} فيديو · ${s.sheets.length} شيت · ${units(s).reduce((a,u)=>a+u.h,0).toFixed(1)} ساعة</div></div><span class="mu">${ic('chl',20)}</span></div>`).join('');
+}
+const PT_OPTS=v=>Object.entries(PT).map(([k,n])=>`<option value="${k}" ${v===k?'selected':''}>${n}</option>`).join('');
+const DIF_OPTS=v=>[1,2,3,4,5].map(i=>`<option value="${i}" ${i===v?'selected':''}>${['سهل جداً','سهل','متوسط','صعب','صعب جداً'][i-1]}</option>`).join('');
+const rowH=(n,p,sub2,id,del,editH)=>`<div class="it"><span>${esc(n)} <span class="pt">${PT[p]}</span><br><span class="mu">${sub2}</span></span><span class="row" style="gap:6px">
+  <button class="sm" data-a="mk" data-id="${id}">${ic('check',14)}درسته</button><button class="sm" data-a="edit" data-id="${id}">${ic('edit',14)}تعديل</button>
+  <button class="sm x" data-a="${del}" data-id="${id}" aria-label="حذف">${ic('trash',14)}</button></span></div>${editId===id?editH:''}`;
+
+function vSub(){
+  const s=cur();if(!s){view='subj';return vList()}
+  const U=units(s),uo=id=>U.find(u=>u.id===id);
+  return `<div class="row sp"><button class="sm" data-a="back">${ic('chr',16)}رجوع</button><button class="sm x" data-a="delSub">${ic('trash',14)}حذف المادة</button></div>
+  <div class="card g g2"><label>الاسم<input data-f="name" value="${esc(s.name)}"></label><label>عدد المستندات (للعلم فقط)<input data-f="docs" type="number" min="0" value="${s.docs||0}"></label>
+    <div style="grid-column:1/-1"><span class="mu">لون المادة</span><div class="row" style="gap:8px;margin-top:6px">${COL.map(c=>`<button data-a="scol" data-c="${c}" aria-label="لون" style="width:30px;height:30px;border-radius:50%;background:${c};border:${s.color===c?'3px solid var(--fg)':'1px solid var(--bd)'}"></button>`).join('')}</div></div></div>
+  <h2>${ic('video',19)}الفيديوهات</h2><div class="card">${s.videos.map(v=>rowH(v.n,v.p,v.h+' ساعة','' +v.id,'delVid',`<div class="card g" style="background:var(--s2)"><div class="g g3">
+    <label>الاسم<input data-f="ev" data-k="n" data-id="${v.id}" value="${esc(v.n)}"></label><label>الساعات<input data-f="ev" data-k="h" data-id="${v.id}" type="number" step="0.25" min="0.25" value="${v.h}"></label>
+    <label>الجزء<select data-f="ev" data-k="p" data-id="${v.id}">${PT_OPTS(v.p)}</select></label></div></div>`)).join('')||'<p class="mu">لا فيديوهات.</p>'}
+    <div class="g g3" style="margin-top:8px"><label>الاسم<input id="vn"></label><label>الساعات<input id="vh" type="number" step="0.25" min="0"></label><label>الجزء<select id="vp">${PT_OPTS('mid')}</select></label></div>
+    <button class="b2" data-a="addVid" style="margin-top:10px;width:100%">${ic('plus',16)}فيديو</button></div>
+  <h2>${ic('file',19)}الشيتات</h2><div class="card">${s.sheets.map(x=>{const u=uo(x.id);return rowH(x.n,x.p,`${x.pg} ص · صعوبة ${u?u.d:3}/5${u?` · ${u.h.toFixed(1)} ساعة`:''}`,x.id,'delSh',`<div class="card g" style="background:var(--s2)"><div class="g g3">
+    <label>الاسم<input data-f="es" data-k="n" data-id="${x.id}" value="${esc(x.n)}"></label><label>الصفحات<input data-f="es" data-k="pg" data-id="${x.id}" type="number" min="1" value="${x.pg}"></label>
+    <label>الصعوبة<select data-f="es" data-k="d" data-id="${x.id}"><option value="0">تلقائي</option>${DIF_OPTS(x.d)}</select></label></div>
+    <label>الجزء<select data-f="es" data-k="p" data-id="${x.id}">${PT_OPTS(x.p)}</select></label></div>`)}).join('')||'<p class="mu">لا شيتات.</p>'}
+    <div class="g g3" style="margin-top:8px"><label>الاسم<input id="sn"></label><label>الصفحات<input id="sp" type="number" min="1"></label>
+      <label>الصعوبة<select id="sd"><option value="0">تلقائي</option>${DIF_OPTS(0)}</select></label></div>
+    <label style="margin-top:8px">الجزء<select id="shp">${PT_OPTS('mid')}</select></label>
+    <button class="b2" data-a="addSh" style="margin-top:10px;width:100%">${ic('plus',16)}شيت</button></div>
+  <h2>${ic('cal',19)}الامتحانات</h2><div class="card">${s.exams.map(e=>`<div class="it" style="display:block"><div class="row sp">
+    <span class="row" style="gap:6px"><select data-f="eet" data-id="${e.id}">${Object.entries(TY).map(([k,t])=>`<option value="${k}" ${e.t===k?'selected':''}>${t.label}</option>`).join('')}</select>${dp('data-f="eed" data-id="'+e.id+'"',e.date)}</span>
+    <button class="sm x" data-a="delEx" data-id="${e.id}" aria-label="حذف">${ic('trash',14)}</button></div>
+    <div class="row" style="margin-top:6px"><span class="mu">يشمل:</span>${Object.entries(PT).map(([k,n])=>`<button class="sm ${e.sc.includes(k)?'on':''}" data-a="sc" data-id="${e.id}" data-k="${k}">${n}</button>`).join('')}</div></div>`).join('')||'<p class="mu">لا امتحانات.</p>'}
+    <div class="g g2" style="margin-top:8px"><label>النوع<select id="et">${Object.entries(TY).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('')}</select></label><label>التاريخ${dp('id="ed"','','ed')}</label></div>
+    <button class="b2" data-a="addEx" style="margin-top:10px;width:100%">${ic('plus',16)}امتحان</button></div>`;
+}
+/* [P5] vSet: عرض معامل السرعة لكل نوع، وحالة الحفظ لا تقول «متزامنة» إن فشل الحفظ أو كان معلّقاً */
+function vSet(){
+  const S=st.setup,dk=isDark();
+  return `<h1>الإعدادات</h1><div class="card"><b>ساعات الدراسة لكل يوم</b><p class="mu" style="margin:4px 0 10px">اكتب 0 ليوم الراحة. نترك 15٪ احتياطاً.</p>
+    <div class="g" style="grid-template-columns:repeat(7,1fr);gap:6px">${DN.map((n,i)=>`<label style="text-align:center;font-size:11.5px">${n}<input data-f="day" data-i="${i}" type="number" step="0.5" min="0" value="${S.days[i]}" style="padding:6px 0;text-align:center"></label>`).join('')}</div></div>
+  <div class="card g"><b>وقت حل الصفحة</b><label>دقائق الصفحة الواحدة (متوسط الصعوبة)<input data-f="pg3" type="number" min="2" max="60" value="${S.pg3}"></label>
+    <span class="mu">الصفحة الأسهل تأخذ وقتاً أقل والأصعب أكثر (×0.4 إلى ×2.5). سرعتك المتعلَّمة (تقييماتك للوقت، لكل نوع): شيتات ×${SPD_BY_TYPE.sheet.toFixed(2)} · فيديوهات ×${SPD_BY_TYPE.video.toFixed(2)} · مراجعات ×${SPD_BY_TYPE.review.toFixed(2)}</span></div>
+  <div class="card row sp"><span class="row" style="gap:8px">${ic(dk?'moon':'sun',19)}${dk?'الوضع الليلي':'الوضع النهاري'}</span><button class="b2" data-a="theme" style="min-height:38px">${ic(dk?'sun':'moon',16)}تبديل</button></div>
+  <div class="card g"><b class="row" style="gap:7px">${ic('cloud',17)}حفظ البيانات</b>
+    <span class="mu">${!CS?'خارج تيليجرام: البيانات محلية فقط.':noPush?'تعذّر الوصول السحابي.':busy?'جارٍ الحفظ...':sync===false?'تعذّر الحفظ السحابي، البيانات محلية.':pending?'جارٍ الحفظ...':'محفوظة ومتزامنة.'}</span>
+    <button class="b2" data-a="exp">نسخ احتياطي</button><textarea id="imp" placeholder="للاستعادة: الصق النسخة هنا"></textarea><button class="b2" data-a="imp">استعادة</button></div>`;
+}
+function vAdmin(){
+  if(!ADMIN_IDS.includes(ME))return `<h1>الإدارة</h1>${ban('bad','alert','غير مصرّح.')}<button class="b2" data-a="tab" data-t="today">خروج</button>`;
+  return `<h1>الإدارة</h1><div class="card g"><label>رابط بنك الأسئلة<input data-f="cqb" value="${esc(CFG.qb)}"></label><label>إعلان<input data-f="cnotice" value="${esc(CFG.notice)}"></label></div>
+    <p class="mu">انسخ الناتج والصقه في config.json:</p><textarea readonly>${esc(JSON.stringify(CFG))}</textarea>
+    <button class="b2" data-a="tab" data-t="today" style="margin-top:10px">خروج</button>`;
+}
+
+const isDark=()=>st.tc?st.theme==='dark':(TG&&TG.colorScheme?TG.colorScheme==='dark':matchMedia('(prefers-color-scheme: dark)').matches);
+function applyTheme(){
+  const dk=isDark(),bg=dk?'#0d0a0b':'#eeedf1';
+  document.documentElement.classList.toggle('dark',dk);
+  $('meta[name=theme-color]').content=bg;
+  try{if(TG){TG.setHeaderColor(bg);TG.setBackgroundColor(bg);TG.setBottomBarColor&&TG.setBottomBarColor(dk?'#161113':'#fbfafc')}}catch(e){}
+}
+if(TG)TG.onEvent('themeChanged',()=>{if(!st.tc){applyTheme();render()}});
+const NAV=[['today','home','اليوم'],['plan','cal','الخطة'],['subj','book','المواد'],['set','sliders','الإعدادات']];
+
+function render(){
+  applyTheme();SPD=calcSpd();
+  try{TG&&TG.BackButton&&((sid||view==='admin')?TG.BackButton.show():TG.BackButton.hide())}catch(e){}
+  $('#hd').innerHTML=`<span class="logo" dir="ltr" data-a="logo">PseudoPlan</span>`;
+  const k=st.t+'|'+ver+'|'+today();
+  if(pc.k!==k){try{pc.p=makePlan(today())}catch(e){pc.p=null;__err(e.message)}pc.k=k}
+  P=pc.p;
+  const kv=keep?[...document.querySelectorAll('#app [id]')].filter(e=>/^(INPUT|TEXTAREA|SELECT)$/.test(e.tagName)).map(e=>[e.id,e.value]):[];
+  $('#app').innerHTML=view==='admin'?vAdmin():view==='set'?vSet():view==='today'?vToday():view==='plan'?vPlan():sid?vSub():vList();
+  kv.forEach(([i,v])=>{const e=document.getElementById(i);if(e&&v!==e.value)e.value=v});keep=false;
+  $('#nav').innerHTML=NAV.map(([k,i,n])=>`<button class="${view===k?'on':''}" data-a="tab" data-t="${k}">${ic(i,22)}${n}</button>`).join('');
+}
+
+/* ===== حفظ ومزامنة ===== */
+function save(){
+  ver++;st.t=Math.max(Date.now(),(st.t||0)+1);lsSet('mp3',st);pending=true;
+  try{TG&&TG.enableClosingConfirmation&&CS&&TG.enableClosingConfirmation()}catch(e){}
+  clearTimeout(tmr);tmr=setTimeout(push,800);
+}
+let seenP=''; /* آخر مؤشر حفظ (slot,count,checksum,t) شوهد في السحابة (قرأناه أو كتبناه): إن اختلف فالسحابة تغيّرت من جهاز آخر. المقارنة بالمؤشر الكامل لا بـ t وحده لأن t قد يتطابق على جهازين */
+/* دمج آمن: عند أي استثناء يعيد null فلا تُكتب السحابة ولا تُفقد النسخة المحلية */
+const smerge=(a,b)=>{try{return mergeSt(a,b)}catch(e){console.log(e);return null}};
+/* [P3] push: يدمج النسخة السحابية قبل الكتابة كلما تغيّرت (m.p!==seenP) وليس فقط حين تكون أحدث بالوقت؛
+   ولا يُعلن «متزامنة» إلا إذا انتهت الكتابة فعلاً (sync=!pending). فشل القراءة أو الدمج يُلغي الكتابة بدل الكتابة فوق السحابة. */
+async function push(){
+  if(!CS||noPush)return;
+  if(busy){again=true;return}
+  busy=true;
+  try{
+    let tries=0;
+    do{
+      again=false;if(++tries>3)break;
+      const m=await cget(['p','q','n']);if(!m)throw 0;
+      if(m.p&&m.p!==seenP){
+        const r=await pull();if(!r.ok)throw 0;
+        if(r.data){const mg=smerge(st,r.data);if(!mg)throw 0;st=mg;norm();prune();ver++;lsSet('mp3',st);keep=true;render()}
+      }
+      const j=await pack(JSON.stringify(st)),t0=st.t,c0=m.p?+m.p.split(',')[0]:1,nw=c0?0:1;
+      const ch=j.match(/[\s\S]{1,2000}/g)||[],sum=CHK(j);
+      for(let i=0;i<ch.length;i++)await cset('s'+nw+'_'+i,ch[i]);
+      if(m.p)await cset('q',m.p);
+      const np=nw+','+ch.length+','+sum+','+t0;
+      await cset('p',np);
+      seenP=np;
+      const oq=m.q?+m.q.split(',')[1]:0,rm=[];
+      for(let i=ch.length;i<oq;i++)rm.push('s'+nw+'_'+i);
+      if(+m.n){rm.push('n');for(let i=0;i<+m.n;i++)rm.push('d'+i)}
+      await crem(rm);
+      if(st.t===t0&&!again)pending=false;
+    }while(again);
+    sync=!pending;
+  }catch(e){sync=false}
+  busy=false;
+  if(!pending)try{TG&&TG.disableClosingConfirmation&&TG.disableClosingConfirmation()}catch(e){}
+}
+function flush(){clearTimeout(tmr);if(pending)push()}
+/* [P3] resync: يدمج كلما تغيّرت السحابة (مؤشر الحفظ مختلف عمّا شوهد) لا فقط إن كان t أكبر (ساعات الأجهزة قد تختلف)،
+   وإن كان الناتج يختلف عن السحابة يُدفع من جديد */
+async function resync(){
+  if(!CS||busy||(pending&&!noPush))return;
+  const r=await pull();if(!r.ok)return;
+  if(r.data&&r.p!==seenP){
+    const mg=smerge(st,r.data);if(!mg)return;
+    lsSet('mp3_prev',st);st=mg;norm();ver++;lsSet('mp3',st);seenP=r.p;noPush=false;pending=st.t!==r.data.t;render();if(pending)push();
+  }
+  else if(noPush){noPush=false;if(!r.data){pending=true;push()}}
+}
+document.addEventListener('visibilitychange',()=>document.hidden?flush():resync());
+addEventListener('pagehide',flush);
+if(TG){TG.onEvent('deactivated',flush);TG.onEvent('activated',resync)}
+
+/* [P3/توافق] load: كل المصادر تمر بالتطبيع نفسه داخل mergeSt/norm؛ وفشل الدمج لا يمسح المحلي (يُحفظ الخاسر في mp3_prev) */
+async function load(){
+  const loc=lsGet('mp3');let r={ok:false};
+  for(let i=0;i<3&&CS&&!r.ok;i++){r=await pull();if(!r.ok)await new Promise(x=>setTimeout(x,700))}
+  const cl=r.data;let m0;
+  if(loc&&cl){
+    m0=smerge(loc,cl);
+    if(!m0){const lw=(loc.t||0)>=(cl.t||0);m0=lw?loc:cl;lsSet('mp3_prev',lw?cl:loc)}
+  }else m0=loc||cl||{};
+  st={...dflt(),...m0};
+  norm();prune();lsSet('mp3',st);
+  if(r.ok&&cl)seenP=r.p;
+  if(CS){if(!r.ok&&!loc)noPush=true;else if(loc&&(!cl||st.t!==cl.t))pending=true}
+  try{const x=await fetch('config.json',{cache:'no-cache'});CFG={...CFG,...await x.json()};lsSet('cfg',CFG)}catch(e){CFG={...CFG,...(lsGet('cfg')||{})}}
+  if(pending)push();
+}
+
+/* ===== الأفعال ===== */
+const findT=id=>P&&P.all.find(x=>x.id===id);
+/* [P3] تحديث updatedAt للمادة/العنصر عند أي تعديل، وعلامة حذف rm للعناصر المحذوفة (تمنع عودتها عند الدمج) */
+const tch=(s,it)=>{if(!s)return;const n=Date.now();s.updatedAt=Math.max(n,(s.updatedAt||0)+1);if(it)it.updatedAt=n};
+const rmk=(s,id)=>{(s.rm=s.rm||{})[id]=Date.now()};
+/* [P3/P2/P5] الإجراءات المعدّلة: addSub/scol/addVid/delVid/addSh/delSh/addEx/delEx/sc/quick (updatedAt وعلامات حذف rm)،
+   skip (تثبيت عدد الأجزاء)، spd (تخزين spType)، freeSave (حقل at)؛ ومعالج change (تحديث updatedAt) */
+const A={
+  tab:d=>{view=d.t;sid=null;fo=false},open:d=>{sid=d.id},back:()=>{sid=null},
+  theme:()=>{st.theme=isDark()?'light':'dark';st.tc=1},
+  logo:()=>{const n=Date.now();taps=taps.filter(t=>n-t<3000);taps.push(n);if(taps.length>=5){taps=[];view='admin';sid=null}},
+  addSub:()=>{const n=val('nn').trim();if(!n){msg('اكتب اسم المادة.');return}st.subjects.push({id:uid(),name:n.slice(0,60),docs:+val('nd')||0,color:COL[st.subjects.length%COL.length],videos:[],sheets:[],exams:[],updatedAt:Date.now()})},
+  delSub:()=>{const id=sid;ask('حذف المادة وكل بياناتها؟',()=>{st.subjects=st.subjects.filter(s=>s.id!==id);st.dead.push(id);sid=null;save();render()})},
+  scol:d=>{cur().color=d.c;tch(cur())},edit:d=>{editId=editId===d.id?null:d.id},
+  addVid:()=>{const n=val('vn').trim(),h=+val('vh');if(!n||!(h>0)){msg('اكتب الاسم والساعات.');return}const s=cur(),it={id:uid(),n:n.slice(0,80),h:Math.min(h,100),p:val('vp')};s.videos.push(it);tch(s,it)},
+  delVid:d=>{const s=cur();s.videos=s.videos.filter(v=>v.id!==d.id);rmk(s,d.id);tch(s)},
+  addSh:()=>{const n=val('sn').trim(),pg=+val('sp');if(!n||!(pg>0)){msg('اكتب الاسم والصفحات.');return}const s=cur(),it={id:uid(),n:n.slice(0,80),pg:Math.min(Math.round(pg),5000),d:+val('sd')||0,p:val('shp')};s.sheets.push(it);tch(s,it)},
+  delSh:d=>{const s=cur();s.sheets=s.sheets.filter(x=>x.id!==d.id);rmk(s,d.id);tch(s)},
+  addEx:()=>{const t=val('et'),date=val('ed');if(!date){msg('اختر التاريخ.');return}const s=cur(),it={id:uid(),t,date,sc:[...TY[t].scope]};s.exams.push(it);tch(s,it)},
+  delEx:d=>{const s=cur();s.exams=s.exams.filter(e=>e.id!==d.id);rmk(s,d.id);tch(s)},
+  sc:d=>{const e=cur().exams.find(x=>x.id===d.id);e.sc=e.sc.includes(d.k)?e.sc.filter(k=>k!==d.k):[...e.sc,d.k];tch(cur(),e)},
+  done:d=>{freeze(d.id.slice(1).replace(/~\d+$/,''));st.log[d.id]={s:'done',on:today(),at:Date.now()};toast('أُنجزت ✓')},
+  rate:d=>{
+    const t=findT(d.id);if(!t)return;
+    st.log[d.id]={s:'done',on:today(),at:Date.now(),r:d.r,t:t.title,h:t.hours,sid:t.sid,f:!!t.free};
+    const key=d.id.slice(1,d.id.lastIndexOf('_')),nx=Object.entries(buildRevisions(today()).R).find(([k])=>k.startsWith('R'+key+'_'));
+    toast(nx?'سُجّل ✓ المراجعة القادمة: '+sd(nx[1].due):'أتقنت هذا الموضوع ✓');
+  },
+  /* [P5] spd: يخزّن spType (sheet/video/review) من نوع المهمة المعروف في بياناتها لا من عنوانها */
+  spd:d=>{const l=st.log[d.id];if(!l||!SPDV[d.r])return;const t=findT(d.id),ty=t?(t.type==='review'?'review':t.k==='v'?'video':'sheet'):typeOfLogId(d.id);l.sp=SPDV[d.r];if(ty)l.spType=ty;l.at=Date.now();toast('سُجّل ✓ سيتعلّم النظام سرعتك')},
+  skip:d=>{freeze(d.id.slice(1).replace(/~\d+$/,''));const c=Object.values(st.log).filter(e=>e.s==='skip'&&e.on===today()).length;if(c>=3){msg('حد الترحيل اليوم: 3 مهام.');return}st.log[d.id]={s:'skip',on:today(),at:Date.now()};toast('رُحّلت إلى الغد')},
+  undo:d=>{st.log[d.id]={s:'x',on:today(),at:Date.now()}},
+  mk:d=>{const u=units(cur()).find(x=>x.id===d.id);if(!u)return;freeze(d.id);parts(u).forEach(p=>{st.log[p.id]={s:'done',on:today(),at:Date.now()}});toast('سُجّل ✓ ستُبنى له مراجعات')},
+  quick:()=>{
+    const n=val('qn').trim(),h=+val('qh'),date=val('qd'),t=val('qt');
+    if(!n){msg('اكتب اسم المادة.');return}
+    if(!(h>0)){msg('اكتب عدد ساعات المنهج.');return}
+    if(!date||date<today()){msg('اختر تاريخ امتحان قادماً.');return}
+    st.subjects.push({id:uid(),name:n.slice(0,60),docs:0,color:COL[0],updatedAt:Date.now(),videos:[{id:uid(),n:'المنهج كاملاً',h:Math.min(h,200),p:TY[t].scope[0],updatedAt:Date.now()}],sheets:[],exams:[{id:uid(),t,date,sc:[...TY[t].scope],updatedAt:Date.now()}]});
+    toast('بُنيت خطتك ✓ يمكنك تفصيلها لاحقاً من المواد');
+  },
+  freeLog:()=>{if(!st.subjects.length){msg('أضف مادة أولاً.');return}fo=true},
+  freeCancel:()=>{fo=false},
+  freeSave:()=>{
+    const s0=val('fl_sid'),title=val('fl_title').trim(),hours=+val('fl_hours');
+    if(!title||!(hours>0)){msg('اكتب الموضوع والساعات.');return}
+    st.freeLog[uid()]={sid:s0,title:title.slice(0,80),hours:Math.min(hours,24),on:today(),at:Date.now()};fo=false;
+    toast('سُجّلت ✓ المراجعة الأولى: '+sd(add(today(),GAP[0]))+'، ثم تتباعد حسب تقييمك');
+  },
+  delFree:d=>{delete st.freeLog[d.id];st.dead.push(d.id)},
+  sol1:d=>{const n=+d.h,b=P?P.uns.length:0;st.setup.days=st.setup.days.map(x=>x>0?Math.max(x,n):0);const p=makePlan(today()),f=b-(p?p.uns.length:0);toast('رُفعت ساعاتك إلى '+n+' ساعة/يوم. '+(f>0?'اتّسعت الخطة لـ '+f+' مهمة إضافية ✓':'لم تتّسع مهام جديدة بعد، زد أكثر أو قلّل المنهج.'))},
+  sol3:()=>{view='subj';sid=null;toast('احذف ما لن تدرسه من المواد.')},
+  exp:async()=>{
+    const z=await pack(JSON.stringify(st)),n=Math.ceil(z.length/3800);
+    const parts=Array.from({length:n},(_,i)=>'PP1|'+(i+1)+'/'+n+'|'+z.slice(i*3800,(i+1)*3800));
+    try{await navigator.clipboard.writeText(parts.join('\n'));toast('تم نسخ '+n+' جزء.')}catch(e){msg('تعذّر النسخ.')}
+  },
+  imp:async()=>{
+    try{
+      let t=val('imp').trim();
+      const m=[...t.matchAll(/PP1\|(\d+)\/(\d+)\|(\S+)/g)];
+      if(m.length){const n=+m[0][2],u={};m.forEach(x=>u[x[1]]=x[3]);if(Object.keys(u).length<n)throw 0;t=Array.from({length:n},(_,i)=>u[i+1]).join('')}
+      const o=JSON.parse(await unpack(t));if(!Array.isArray(o.subjects))throw 0;
+      ask('استبدال بياناتك الحالية؟',()=>{lsSet('mp3_prev',st);st={...dflt(),...o};norm();noPush=false;save();render();msg('تمت الاستعادة.')});
+    }catch(e){msg('النسخة غير صالحة.')}
+  },
+  more:()=>{more+=14}
+};
+const NOSAVE=/^(tab|open|back|edit|exp|imp|more|freeLog|freeCancel)$/;
+document.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-a]');if(!b||!A[b.dataset.a])return;
+  try{TG&&TG.HapticFeedback&&TG.HapticFeedback.impactOccurred('light')}catch(x){}
+  await A[b.dataset.a](b.dataset);
+  if(!NOSAVE.test(b.dataset.a))save();
+  render();
+  if(fo&&b.dataset.a==='freeLog'){const t=$('#fl_title');t&&t.focus()}
+});
+document.addEventListener('change',e=>{
+  const f=e.target.dataset.f,v=e.target.value;if(!f)return;
+  const id=e.target.dataset.id,k=e.target.dataset.k;
+  if(f==='name'){if(v.trim()){cur().name=v.trim();tch(cur())}}
+  else if(f==='docs'){cur().docs=+v||0;tch(cur())}
+  else if(f==='day')st.setup.days[+e.target.dataset.i]=Math.max(0,+v||0);
+  else if(f==='pg3')st.setup.pg3=clamp(+v||12,2,60);
+  else if(f==='ev'||f==='es'){
+    const it=(f==='ev'?cur().videos:cur().sheets).find(x=>x.id===id);if(!it)return;
+    if(k==='n'){if(v.trim())it.n=v.trim()}
+    else if(k==='p')it.p=v;
+    else if(k==='h'||k==='pg'){if(+v>0)it[k]=+v}
+    else if(k==='d')it.d=+v>0?clamp(+v,1,5):0;
+    tch(cur(),it);
+    /* [P2] بعد بدء الدراسة (np مثبّت) تبقى سجلات الأجزاء السابقة بمعرّفاتها؛ وإن كبرت المدة تُضاف أجزاء جديدة */
+    if(it.np&&(k==='pg'||k==='h'))toast('تُحفظ سجلات الأجزاء السابقة؛ قد تُضاف أجزاء جديدة إن زادت المدة.');
+  }
+  else if(f==='eet'){const x=cur().exams.find(q=>q.id===id);if(x){x.t=v;x.sc=[...TY[v].scope];tch(cur(),x)}}
+  else if(f==='eed'){const x=cur().exams.find(q=>q.id===id);if(x){x.date=v;tch(cur(),x)}}
+  else if(f==='cqb')CFG.qb=v;
+  else if(f==='cnotice')CFG.notice=v;
+  else return;
+  save();keep=true;render();
+});
+load().catch(e=>console.log(e)).then(render);
+</script>
+</body></html>
